@@ -14,7 +14,7 @@ import NoteForm from '@/components/NoteForm/NoteForm';
 
 
 interface NotesClientPageProps {
-    tag: string
+    tag: string,
 }
 
 export default function NotesClientPage({tag}: NotesClientPageProps) {

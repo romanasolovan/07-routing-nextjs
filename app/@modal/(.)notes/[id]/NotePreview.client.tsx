@@ -11,8 +11,8 @@ import ErrorMessage from '@/components/ErrorMessage/ErrorMessage'
 
 
 type NotePreviewProps = {
-    id: string
-}; 
+    id: string,
+} 
 
 export default function NotePreview({ id }: NotePreviewProps) {
   const router = useRouter();
