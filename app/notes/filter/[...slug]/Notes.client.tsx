@@ -27,12 +27,12 @@ export default function NotesClientPage({tag}: NotesClientPageProps) {
     queryFn: () => fetchNotes(page, query, tag),
     placeholderData: keepPreviousData,
     refetchOnMount: false,
-  });
+  })
 
     const handleSearch = (query: string) => {
     setQuery(query);
     setPage(1);
-  };
+  }
 
   return (
     <div className={css.app}>
@@ -51,11 +51,11 @@ export default function NotesClientPage({tag}: NotesClientPageProps) {
       </header>
       {isLoading && <Loader />}
       {isError && <ErrorMessage />}
-      {!!data && data?.notes?.length > 0 ? (
+      {isSuccess && data && data?.notes.length > 0 ? (
         <NoteList notes={data.notes} />
-      ) : query.trim() !== "" ? (
-        <p className={css.noNotes}>No notes found.</p>
-      ) : null}
+      ) : (
+        !isLoading && <p>Tasks not found</p>
+      )}
       {isOpen && (
         <Modal onClose={() => setIsOpen(false)}>
           <NoteForm onCancel={() => setIsOpen(false)} />

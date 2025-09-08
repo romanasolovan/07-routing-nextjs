@@ -11,6 +11,7 @@ import fetchNotes from "@/lib/api";
 interface NotesProps {
   params: Promise<{ slug: string[] }>;
 }
+
 const Notes = async ({ params }: NotesProps) => {
   const { slug } = await params;
   const tag = slug[0] === "All" ? "" : slug[0];
