@@ -13,4 +13,4 @@ export interface CreateNote {
   tag: string
 }
 
-export type NoteTags = 'Todo' | 'Work' | 'Personal' | 'Meeting' | 'Shopping'
+// export type NoteTags = 'Todo' | 'Work' | 'Personal' | 'Meeting' | 'Shopping'

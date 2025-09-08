@@ -1,37 +1,39 @@
-"use client";
+'use client'
 
-import css from "./NotesPage.module.css";
-import { useState } from "react";
-import { useQuery, keepPreviousData } from "@tanstack/react-query";
-import { useDebounce } from "use-debounce";
-import { fetchNotes } from "../../lib/api";
-import SearchBox from "../../components/SearchBox/SearchBox";
-import NoteList from "../../components/NoteList/NoteList";
-import NoteForm from "../../components/NoteForm/NoteForm";
-import Pagination from "../../components/Pagination/Pagination";
-import Modal from "../../components/Modal/Modal";
-import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
-import Loader from "../../components/Loader/Loader";
+import Loader from '@/components/Loader/Loader';
+import fetchNotes from '@/lib/api';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import React, { useState } from 'react'
+import css from './NotesPage.module.css'
+import SearchBox from '@/components/SearchBox/SearchBox';
+import Pagination from '@/components/Pagination/Pagination';
+import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
+import NoteList from '@/components/NoteList/NoteList';
+import Modal from '@/components/Modal/Modal';
+import NoteForm from '@/components/NoteForm/NoteForm';
 
-const perPage = 12;
 
-const NotesClient = () => {
-  const [query, setQuery] = useState("");
+interface NotesClientPageProps {
+    tag: string
+}
+
+export default function NotesClientPage({tag}: NotesClientPageProps) {
   const [page, setPage] = useState(1);
+  const [query, setQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [debouncedQuery] = useDebounce(query, 500);
 
-  const { data, isLoading, isError, isSuccess } = useQuery({
-    queryKey: ["notes", page, debouncedQuery],
-    queryFn: () => fetchNotes({ page, perPage, search: debouncedQuery }),
+  const { data, isSuccess, isLoading, isError } = useQuery({
+    queryKey: ["notes", page, query, tag],
+    queryFn: () => fetchNotes(page, query, tag),
     placeholderData: keepPreviousData,
+    refetchOnMount: false,
   });
 
-  const handleSearch = (query: string) => {
+    const handleSearch = (query: string) => {
     setQuery(query);
     setPage(1);
   };
-    
+
   return (
     <div className={css.app}>
       <header className={css.toolbar}>
@@ -60,7 +62,5 @@ const NotesClient = () => {
         </Modal>
       )}
     </div>
-  );
-};
-
-export default NotesClient;
+  )
+}

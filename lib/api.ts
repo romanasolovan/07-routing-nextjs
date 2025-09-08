@@ -1,5 +1,5 @@
 import axios from 'axios'
-import type { Note, CreateNote, NoteTags } from '../types/note'
+import type { Note, CreateNote } from '../types/note'
 
 interface FetchNotesResponse {
   notes: Note[]
@@ -10,7 +10,7 @@ interface FetchNotesParams {
   page?: number
   perPage?: number
   search?: string
-  tag?: NoteTags
+  tag?: string
 }
 
 const api = axios.create({
@@ -20,19 +20,36 @@ const api = axios.create({
   },
 })
 
-export const fetchNotes = async ({
-  page = 1,
-  perPage = 12,
-  search = '',
-}: FetchNotesParams): Promise<FetchNotesResponse> => {
-  const response = await api.get<FetchNotesResponse>('/notes', {
-    params: {
-      page,
-      perPage,
-      search,
-    },
-  })
-  return response.data
+// export const fetchNotes = async ({
+//   page = 1,
+//   perPage = 12,
+//   search = '',
+// }: FetchNotesParams): Promise<FetchNotesResponse> => {
+//   const response = await api.get<FetchNotesResponse>('/notes', {
+//     params: {
+//       page,
+//       perPage,
+//       search,
+//     },
+//   })
+//   return response.data
+// }
+
+export default async function fetchNotes(
+  page: number,
+  searchQuery?: string,
+  tag?: string,
+): Promise<FetchNotesResponse> {
+  const params: FetchNotesParams = {
+    page,
+    perPage: 12,
+  }
+
+  if (searchQuery) params.search = searchQuery
+  if (tag) params.tag = tag
+
+  const res = await api.get<FetchNotesResponse>('/notes', { params })
+  return res.data
 }
 
 export const createNote = async (newNote: CreateNote): Promise<Note> => {
