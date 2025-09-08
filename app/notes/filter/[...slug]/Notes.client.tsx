@@ -11,6 +11,7 @@ import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
 import NoteList from '@/components/NoteList/NoteList';
 import Modal from '@/components/Modal/Modal';
 import NoteForm from '@/components/NoteForm/NoteForm';
+import { useDebouncedCallback } from 'use-debounce';
 
 
 interface NotesClientPageProps {
@@ -29,15 +30,15 @@ export default function NotesClientPage({tag}: NotesClientPageProps) {
     refetchOnMount: false,
   })
 
-    const handleSearch = (query: string) => {
+  const handleSearch = useDebouncedCallback ((query: string) => {
     setQuery(query);
     setPage(1);
-  }
+  }, 300)
 
   return (
     <div className={css.app}>
       <header className={css.toolbar}>
-        <SearchBox onChange={handleSearch} value={query} />
+        <SearchBox onChange={handleSearch} />
         {isSuccess && data?.totalPages > 1 && (
           <Pagination
             page={page}
