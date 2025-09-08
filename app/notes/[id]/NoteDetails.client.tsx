@@ -1,6 +1,6 @@
 'use client';
 
-import NoteDetails from '@/components/NoteDetails/NoteDetails';
+
 import { fetchNoteById } from '@/lib/api';
 import { useQuery } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
@@ -41,11 +41,7 @@ export default function NoteDetailsClient() {
       >
         Back
       </button>
-      <NoteDetails
-        content={note.content}
-        date={note.createdAt}
-        title={note.title}
-      />
+    
     </>
   );
 }
